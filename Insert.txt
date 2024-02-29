@@ -1,0 +1,23 @@
+INSERT INTO User (Username, PasswordHash, IsAdmin) VALUES ('anakin.skywalker@fakeemail.com', 'c5e4bfb70ae1e8f1d8d260d9e762e77c508c8eb9e6b8bda3a58756b588ddc6f0', '0');
+INSERT INTO Transactions (Username, TransactionID, BucketName, IsExpense, Amount, TransDate, Description) VALUES ('anakin.skywalker@fakeemail.com', '12345', 'Entertainment', '1', '50.00', '2024-02-29', 'Movie tickets');
+INSERT INTO Buckets (Username, BucketID, BucketName, BucketDescription, BucketValue) VALUES ('anakin.skywalker@fakeemail.com', '54321', 'Entertainment', 'Total spent on entertainment', '150.00');
+INSERT INTO Budget (BudgetID, Username, TotalMonthlyAllocation) VALUES ('678', 'anakin.skywalker@fakeemail.com', '500.00');
+INSERT INTO Shared (Username_1, SharedUsername_2) VALUES ('anakin.skywalker@fakeemail.com', 'anakin.skywalker@fakeemail.com');
+
+INSERT INTO User (Username, PasswordHash, IsAdmin) VALUES ('thorin.oakenshield@fakeemail.com', 'bafca66f62e09d62c0679f3833c172f7dc884c4f4e20d51fc92ef21b1b91732e', '0');
+INSERT INTO Transactions (Username, TransactionID, BucketName, IsExpense, Amount, TransDate, Description) VALUES ('thorin.oakenshield@fakeemail.com', '54321', 'Dining', '1', '100.00', '2024-02-29', 'Dinner with friends');
+INSERT INTO Buckets (Username, BucketID, BucketName, BucketDescription, BucketValue) VALUES ('thorin.oakenshield@fakeemail.com', '98765', 'Dining', 'Total spent on dining out', '250.00');
+INSERT INTO Budget (BudgetID, Username, TotalMonthlyAllocation) VALUES ('321', 'thorin.oakenshield@fakeemail.com', '800.00');
+INSERT INTO Shared (Username_1, SharedUsername_2) VALUES ('thorin.oakenshield@fakeemail.com', 'anakin.skywalker@fakeemail.com');
+
+INSERT INTO User (Username, PasswordHash, IsAdmin) VALUES ('mary.poppins@fakeemail.com', '8be317a31a4e595d060b40c6dcb92990a41e1f6d066c40d5351c2443ddc27de8', '0');
+INSERT INTO Transactions (Username, TransactionID, BucketName, IsExpense, Amount, TransDate, Description) VALUES ('mary.poppins@fakeemail.com', '98765', 'Art Supplies', '1', '75.50', '2024-02-29', 'New paint brushes');
+INSERT INTO Buckets (Username, BucketID, BucketName, BucketDescription, BucketValue) VALUES ('mary.poppins@fakeemail.com', '24680', 'Art Supplies', 'Total spent on art supplies', '200.00');
+INSERT INTO Budget (BudgetID, Username, TotalMonthlyAllocation) VALUES ('654', 'mary.poppins@fakeemail.com', '150.00');
+INSERT INTO Shared (Username_1, SharedUsername_2) VALUES ('mary.poppins@fakeemail.com', 'anakin.skywalker@fakeemail.com');
+
+INSERT INTO User (Username, PasswordHash, IsAdmin) VALUES ('paul.atreides@fakeemail.com', 'd1e8a70b5ccab1dc2f56bbf7e99f064a660c08e361a35751b9c483c88943d082', '0');
+INSERT INTO Transactions (Username, TransactionID, BucketName, IsExpense, Amount, TransDate, Description) VALUES ('paul.atreides@fakeemail.com', '42069', 'Groceries', '1', '250.87', '2001-09-11', 'September Grocery Run');
+INSERT INTO Buckets (Username, BucketID, BucketName, BucketDescription, BucketValue) VALUES ('paul.atreides@fakeemail.com', '69420', 'Groceries', 'Total Balance Spent on Groceries each year', '12345.32');
+INSERT INTO Budget (BudgetID, Username, TotalMonthlyAllocation) VALUES ('357', 'paul.atreides@fakeemail.com', '3000.00');
+INSERT INTO Shared (Username_1, SharedUsername_2) VALUES ('paul.atreides@fakeemail.com', 'anakin.skywalker@fakeemail.com');
