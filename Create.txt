@@ -1,0 +1,49 @@
+CREATE TABLE User
+(
+ Username VARCHAR(60) NOT NULL,
+ PasswordHash VARCHAR(64) NOT NULL,
+ IsAdmin BIT(1) NOT NULL,
+ PRIMARY KEY (Username)
+);
+
+CREATE TABLE Transactions
+(
+ TransactionID SERIAL,
+ BucketName VARCHAR(60) NOT NULL,
+ IsExpense TINYINT(1) NOT NULL,
+ Amount DECIMAL(10,2) NOT NULL,
+ TransDate DATE NOT NULL,
+ Description TEXT NOT NULL,
+ Username VARCHAR(60) NOT NULL,
+ PRIMARY KEY (TransactionID),
+ FOREIGN KEY (Username) REFERENCES User(Username)
+);
+
+CREATE TABLE Buckets
+(
+ BucketID SERIAL,
+ BucketName VARCHAR(60) NOT NULL,
+ BucketDescription TEXT NOT NULL,
+ BucketValue DECIMAL(10,2) NOT NULL,
+ Username VARCHAR(60) NOT NULL,
+ PRIMARY KEY (BucketID),
+ FOREIGN KEY (Username) REFERENCES User(Username)
+);
+
+CREATE TABLE Budget
+(
+ TotalMonthlyAllocation DECIMAL(10,2) NOT NULL,
+ BudgetID SERIAL,
+ Username VARCHAR(60) NOT NULL,
+ PRIMARY KEY (BudgetID),
+ FOREIGN KEY (Username) REFERENCES User(Username)
+);
+
+CREATE TABLE Shared
+(
+ Username_1 VARCHAR(60) NOT NULL,
+ SharedUsername_2 VARCHAR(60) NOT NULL,
+ PRIMARY KEY (Username_1, SharedUsername_2),
+ FOREIGN KEY (Username_1) REFERENCES User(Username),
+ FOREIGN KEY (SharedUsername_2) REFERENCES User(Username)
+);
