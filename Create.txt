@@ -1,9 +1,10 @@
 CREATE TABLE User
 (
+ UserID SERIAL,
  Username VARCHAR(60) NOT NULL,
  PasswordHash VARCHAR(64) NOT NULL,
  IsAdmin BIT(1) NOT NULL,
- PRIMARY KEY (Username)
+ PRIMARY KEY (UserID)
 );
 
 CREATE TABLE Transactions
@@ -16,7 +17,7 @@ CREATE TABLE Transactions
  Description TEXT NOT NULL,
  Username VARCHAR(60) NOT NULL,
  PRIMARY KEY (TransactionID),
- FOREIGN KEY (Username) REFERENCES User(Username)
+ FOREIGN KEY (UserID) REFERENCES User(UserID)
 );
 
 CREATE TABLE Buckets
@@ -27,7 +28,7 @@ CREATE TABLE Buckets
  BucketValue DECIMAL(10,2) NOT NULL,
  Username VARCHAR(60) NOT NULL,
  PRIMARY KEY (BucketID),
- FOREIGN KEY (Username) REFERENCES User(Username)
+ FOREIGN KEY (UserID) REFERENCES User(UserID)
 );
 
 CREATE TABLE Budget
@@ -36,14 +37,14 @@ CREATE TABLE Budget
  BudgetID SERIAL,
  Username VARCHAR(60) NOT NULL,
  PRIMARY KEY (BudgetID),
- FOREIGN KEY (Username) REFERENCES User(Username)
+ FOREIGN KEY (UserID) REFERENCES User(UserID)
 );
 
 CREATE TABLE Shared
 (
- Username_1 VARCHAR(60) NOT NULL,
- SharedUsername_2 VARCHAR(60) NOT NULL,
+ UserID_1 INT NOT NULL,
+ SharedUserID_2 INT NOT NULL,
  PRIMARY KEY (Username_1, SharedUsername_2),
- FOREIGN KEY (Username_1) REFERENCES User(Username),
- FOREIGN KEY (SharedUsername_2) REFERENCES User(Username)
+ FOREIGN KEY (UserID_1) REFERENCES User(UserID),
+ FOREIGN KEY (SharedUserID_2) REFERENCES User(UserID)
 );

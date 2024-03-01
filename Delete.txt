@@ -1,24 +1,24 @@
-DELETE FROM Transactions WHERE Username = 'anakin.skywalker@fakeemail.com';
-DELETE FROM Transactions WHERE Username = 'thorin.oakenshield@fakeemail.com';
-DELETE FROM Transactions WHERE Username = 'mary.poppins@fakeemail.com';
-DELETE FROM Transactions WHERE Username = 'paul.atreides@fakeemail.com';
+DELETE FROM Transactions WHERE UserID = '1';
+DELETE FROM Transactions WHERE UserID = '2';
+DELETE FROM Transactions WHERE UserID = '3';
+DELETE FROM Transactions WHERE UserID = '4';
 
-DELETE FROM Buckets WHERE Username = 'anakin.skywalker@fakeemail.com';
-DELETE FROM Buckets WHERE Username = 'thorin.oakenshield@fakeemail.com';
-DELETE FROM Buckets WHERE Username = 'mary.poppins@fakeemail.com';
-DELETE FROM Buckets WHERE Username = 'paul.atreides@fakeemail.com';
+DELETE FROM Buckets WHERE UserID = '1';
+DELETE FROM Buckets WHERE UserID = '2';
+DELETE FROM Buckets WHERE UserID = '3';
+DELETE FROM Buckets WHERE UserID = '4';
 
-DELETE FROM Budget WHERE Username = 'anakin.skywalker@fakeemail.com';
-DELETE FROM Budget WHERE Username = 'thorin.oakenshield@fakeemail.com';
-DELETE FROM Budget WHERE Username = 'mary.poppins@fakeemail.com';
-DELETE FROM Budget WHERE Username = 'paul.atreides@fakeemail.com';
+DELETE FROM Budget WHERE UserID = '1';
+DELETE FROM Budget WHERE UserID = '2';
+DELETE FROM Budget WHERE UserID = '3';
+DELETE FROM Budget WHERE UserID = '4';
 
-DELETE FROM Shared WHERE Username_1 = 'anakin.skywalker@fakeemail.com';
-DELETE FROM Shared WHERE Username_1 = 'thorin.oakenshield@fakeemail.com';
-DELETE FROM Shared WHERE Username_1 = 'mary.poppins@fakeemail.com';
-DELETE FROM Shared WHERE Username_1 = 'paul.atreides@fakeemail.com';
+DELETE FROM Shared WHERE UserID = '1';
+DELETE FROM Shared WHERE UserID = '2';
+DELETE FROM Shared WHERE UserID = '3';
+DELETE FROM Shared WHERE UserID = '4';
 
-DELETE FROM User WHERE Username = 'anakin.skywalker@fakeemail.com';
-DELETE FROM User WHERE Username = 'thorin.oakenshield@fakeemail.com';
-DELETE FROM User WHERE Username = 'mary.poppins@fakeemail.com';
-DELETE FROM User WHERE Username = 'paul.atreides@fakeemail.com';
+DELETE FROM User WHERE UserID = '1';
+DELETE FROM User WHERE UserID = '2';
+DELETE FROM User WHERE UserID = '3';
+DELETE FROM User WHERE UserID = '4';
