@@ -15,7 +15,7 @@ CREATE TABLE Transactions
  Amount DECIMAL(10,2) NOT NULL,
  TransDate DATE NOT NULL,
  Description TEXT NOT NULL,
- Username VARCHAR(60) NOT NULL,
+ UserID BIGINT NOT NULL,
  PRIMARY KEY (TransactionID),
  FOREIGN KEY (UserID) REFERENCES User(UserID)
 );
@@ -26,7 +26,7 @@ CREATE TABLE Buckets
  BucketName VARCHAR(60) NOT NULL,
  BucketDescription TEXT NOT NULL,
  BucketValue DECIMAL(10,2) NOT NULL,
- Username VARCHAR(60) NOT NULL,
+ UserID BIGINT NOT NULL,
  PRIMARY KEY (BucketID),
  FOREIGN KEY (UserID) REFERENCES User(UserID)
 );
@@ -35,15 +35,15 @@ CREATE TABLE Budget
 (
  TotalMonthlyAllocation DECIMAL(10,2) NOT NULL,
  BudgetID SERIAL,
- Username VARCHAR(60) NOT NULL,
+ UserID BIGINT NOT NULL,
  PRIMARY KEY (BudgetID),
  FOREIGN KEY (UserID) REFERENCES User(UserID)
 );
 
 CREATE TABLE Shared
 (
- UserID_1 INT NOT NULL,
- SharedUserID_2 INT NOT NULL,
+ UserID_1 BIGINT NOT NULL,
+ SharedUserID_2 BIGINT NOT NULL,
  PRIMARY KEY (Username_1, SharedUsername_2),
  FOREIGN KEY (UserID_1) REFERENCES User(UserID),
  FOREIGN KEY (SharedUserID_2) REFERENCES User(UserID)
