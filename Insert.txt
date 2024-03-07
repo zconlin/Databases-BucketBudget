@@ -1,6 +1,6 @@
 INSERT INTO User (Username, PasswordHash, IsAdmin) VALUES ('anakin.skywalker@fakeemail.com', 'c5e4bfb70ae1e8f1d8d260d9e762e77c508c8eb9e6b8bda3a58756b588ddc6f0', b'0');
 INSERT INTO Transactions (UserID, TransactionID, BucketName, IsExpense, Amount, TransDate, Description) VALUES ('1', '12345', 'Entertainment', '1', '50.00', '2024-02-29', 'Movie tickets');
-INSERT INTO Buckets (UserID, BucketID, BucketName, BucketDescription, BucketAllotted, BucketRemaining) VALUES ('1', '54321', 'Entertainment', 'Total spent on entertainment', '150.00', '75.00);
+INSERT INTO Buckets (UserID, BucketID, BucketName, BucketDescription, BucketAllotted, BucketRemaining) VALUES ('1', '54321', 'Entertainment', 'Total spent on entertainment', '150.00', '75.00');
 INSERT INTO Budget (BudgetID, UserID, TotalMonthlyAllocation, TotalMonthlyRemaining) VALUES ('678', '1', '500.00', '400.00');
 INSERT INTO Shared (UserID_1, SharedUserID_2) VALUES ('1', '1');
 
