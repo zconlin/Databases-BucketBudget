@@ -25,7 +25,8 @@ CREATE TABLE Buckets
  BucketID SERIAL,
  BucketName VARCHAR(60) NOT NULL,
  BucketDescription TEXT NOT NULL,
- BucketValue DECIMAL(10,2) NOT NULL,
+ BucketRemaining DECIMAL(10,2) NOT NULL,
+ BucketAllotted DECIMAL(10,2) NOT NULL,
  UserID BIGINT UNSIGNED NOT NULL,
  PRIMARY KEY (BucketID),
  FOREIGN KEY (UserID) REFERENCES User(UserID)
@@ -34,6 +35,7 @@ CREATE TABLE Buckets
 CREATE TABLE Budget
 (
  TotalMonthlyAllocation DECIMAL(10,2) NOT NULL,
+ TotalMonthlyRemaining DECIMAL(10,2) NOT NULL,
  BudgetID SERIAL,
  UserID BIGINT UNSIGNED NOT NULL,
  PRIMARY KEY (BudgetID),
