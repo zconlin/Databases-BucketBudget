@@ -18,9 +18,11 @@ CREATE TABLE Buckets
  PRIMARY KEY (BucketID),
  FOREIGN KEY (UserID) REFERENCES User(UserID)
 );
+
 CREATE TABLE Budget
 (
  TotalMonthlyAllocation DECIMAL(10,2) NOT NULL,
+ TotalMonthlyRemaining DECIMAL(10,2) NOT NULL,
  BudgetID SERIAL,
  UserID BIGINT UNSIGNED NOT NULL,
  PRIMARY KEY (BudgetID),
