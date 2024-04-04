@@ -1,0 +1,10 @@
+INSERT INTO Transactions (UserID, IsExpense, Amount, TransDate, Description, BucketID) VALUES ('1', '1', '50.00', '2024-02-29', 'Movie tickets', '1');
+INSERT INTO Transactions (UserID, IsExpense, Amount, TransDate, Description, BucketID) VALUES ('1', '1', '30.00', '2024-03-15', 'Dinner with friends', '1');
+INSERT INTO Transactions (UserID, IsExpense, Amount, TransDate, Description, BucketID) VALUES ('1', '1', '20.00', '2024-03-01', 'Coffee with colleagues', '1');
+INSERT INTO Transactions (UserID, IsExpense, Amount, TransDate, Description, BucketID) VALUES ('1', '1', '100.00', '2024-03-05', 'Groceries', '2');
+INSERT INTO Transactions (UserID, IsExpense, Amount, TransDate, Description, BucketID) VALUES ('1', '0', '200.00', '2024-03-10', 'Salary', '0');
+INSERT INTO Transactions (UserID, IsExpense, Amount, TransDate, Description, BucketID) VALUES ('1', '1', '15.00', '2024-03-20', 'Lunch', '2');
+INSERT INTO Transactions (UserID, IsExpense, Amount, TransDate, Description, BucketID) VALUES ('1', '1', '50.00', '2024-03-25', 'Gasoline', '2');
+INSERT INTO Transactions (UserID, IsExpense, Amount, TransDate, Description, BucketID) VALUES ('1', '1', '40.00', '2024-04-02', 'Clothing', '2');
+INSERT INTO Transactions (UserID, IsExpense, Amount, TransDate, Description, BucketID) VALUES ('1', '1', '25.00', '2024-04-05', 'Books', '1');
+INSERT INTO Transactions (UserID, IsExpense, Amount, TransDate, Description, BucketID) VALUES ('1', '0', '300.00', '2024-04-08', 'Freelance work', '0');

@@ -1,7 +1,9 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import mysql.connector
 from dotenv import load_dotenv
+import re
+from flask_bcrypt import Bcrypt
 
 
 # Load environment variables from .env file
@@ -10,7 +12,7 @@ load_dotenv()
 # Initialize the flask app
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET")
-
+bcrypt = Bcrypt(app)
 
 # ------------------------ BEGIN FUNCTIONS ------------------------ #
 # Function to retrieve DB connection
@@ -23,13 +25,13 @@ def get_db_connection():
     )
     return conn
 
-# Get all items from the "items" table of the db
-def get_all_items():
+# Get all buckets from the "buckets" table of the db
+def get_all_buckets():
     # Create a new database connection for each request
     conn = get_db_connection()  # Create a new database connection
     cursor = conn.cursor() # Creates a cursor for the connection, you need this to do queries
     # Query the db
-    query = "SELECT name, quantity FROM items"
+    query = "SELECT u.Username, b.BucketName, b.BucketDescription, b.BucketAllotted, b.BucketRemaining FROM User u JOIN Buckets b ON u.UserID = b.UserID WHERE u.Username = 'your_username_here';"
     cursor.execute(query)
     # Get result and close
     result = cursor.fetchall() # Gets result from query
@@ -42,8 +44,67 @@ def get_all_items():
 # EXAMPLE OF GET REQUEST
 @app.route("/", methods=["GET"])
 def home():
-    items = get_all_items() # Call defined function to get all items
+    if 'loggedin' in session:
+        return render_template('login.html')
+    items = get_all_buckets() # Call defined function to get all items
     return render_template("index.html", items=items) # Return the page to be rendered
+
+@app.route('/login', methods =['GET', 'POST'])
+def login():
+    msg = ''
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+        username = request.form['username']
+        password = request.form['password']
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM User WHERE Username = %s', (username, ))
+        account = cursor.fetchone()
+        userID = account[0]
+        username = account[1]
+        password_hash = account[2]
+        if account:
+            is_valid = bcrypt.check_password_hash(password_hash, password)
+            if is_valid:
+                session['loggedin'] = True
+                session['id'] = userID
+                session['username'] = username
+                msg = 'Logged in successfully!'
+                return render_template('index.html', msg = msg)
+        else:
+            msg = 'Incorrect username / password !'
+    return render_template('login.html', msg = msg)
+ 
+@app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('username', None)
+    return redirect(url_for('login'))
+ 
+@app.route('/register', methods =['GET', 'POST'])
+def register():
+    msg = ''
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form :
+        username = request.form['username']
+        password = request.form['password']
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM User WHERE Username = %s', (username, ))
+        account = cursor.fetchone()
+        if account:
+            msg = 'Account already exists !'
+        elif not re.match(r'[A-Za-z0-9]+', username):
+            msg = 'Username must contain only characters and numbers !'
+        elif not username or not password:
+            msg = 'Please fill out the form !'
+        else:
+            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8') 
+            cursor.execute('INSERT INTO itc350.User (Username, PasswordHash, IsAdmin) VALUES (%s, %s, %s)', (username, hashed_password, False))
+            conn.commit()
+            msg = 'You have successfully registered !'
+    elif request.method == 'POST':
+        msg = 'Please fill out the form !'
+    return render_template('register.html', msg = msg)
 
 # EXAMPLE OF POST REQUEST
 @app.route("/new-item", methods=["POST"])

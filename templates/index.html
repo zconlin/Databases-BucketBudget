@@ -18,27 +18,34 @@
     {% endwith %}
 
     <!-- Code for adding a new item -->
-    <h2>Add New Item</h2>
+    <h2>{{ session.username }}'s Budget</h2>
+
+    <h4>Add new expense/deposit:</h4>
     <form action="/new-item" method="post">
         <!-- Name -->
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
         <br>
         <!-- Quantity -->
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" required>
+        <label for="quantity">Description:</label>
+        <input type="text" id="description" name="description" required>
+        <br>
+        <!-- Amount -->
+        <label for="quantity">Amount:</label>
+        <input type="number" id="amount" name="amount" required>
         <br>
         <!-- Submit Button -->
         <input type="submit" value="Submit">
     </form>
 
     <!-- Code for listing owned items -->
-    <h2>List of Owned Items</h2>
+    <h4>{{ session.username }}'s Buckets</h4>
     <ul>
         <!-- This is some python jinja2 code. Only existing items will be displayed. -->
-        {% for item in items %}
-            <li>Name: {{ item[0] }} - Quantity: {{ item[1] }}</li>
+        {% for bucket in buckets %}
+            <li>Name: {{ bucket[0] }} - Description: {{ bucket[1] }} - Allocated: {{ bucket[2] }} - Remaining: {{ bucket[3] }}</li>
         {% endfor %}
     </ul>
+    <p class="bottom"><a class="bottom" href="{{url_for('logout')}}">Logout</a></p>
 </body>
 </html>
