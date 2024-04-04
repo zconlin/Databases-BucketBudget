@@ -44,7 +44,7 @@ def get_all_buckets():
 # EXAMPLE OF GET REQUEST
 @app.route("/", methods=["GET"])
 def home():
-    if 'loggedin' in session:
+    if not session.get('logged_in'):
         return render_template('login.html')
     items = get_all_buckets() # Call defined function to get all items
     return render_template("index.html", items=items) # Return the page to be rendered
@@ -65,7 +65,7 @@ def login():
         if account:
             is_valid = bcrypt.check_password_hash(password_hash, password)
             if is_valid:
-                session['loggedin'] = True
+                session['logged_in'] = True
                 session['id'] = userID
                 session['username'] = username
                 msg = 'Logged in successfully!'
@@ -76,9 +76,7 @@ def login():
  
 @app.route('/logout')
 def logout():
-    session.pop('loggedin', None)
-    session.pop('id', None)
-    session.pop('username', None)
+    session.clear()
     return redirect(url_for('login'))
  
 @app.route('/register', methods =['GET', 'POST'])
@@ -101,7 +99,8 @@ def register():
             hashed_password = bcrypt.generate_password_hash(password).decode('utf-8') 
             cursor.execute('INSERT INTO itc350.User (Username, PasswordHash, IsAdmin) VALUES (%s, %s, %s)', (username, hashed_password, False))
             conn.commit()
-            msg = 'You have successfully registered !'
+            msg = 'Registered successfully!'
+            return render_template('login.html', msg = msg)
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
     return render_template('register.html', msg = msg)
