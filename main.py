@@ -57,37 +57,40 @@ def login():
         password = request.form['password']
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM User WHERE Username = %s', (username, ))
+        query = "SELECT * FROM User WHERE Username = %s" #looks for user associated with account specified
+        vals = (username,)
+        cursor.execute(query, vals)
         account = cursor.fetchone()
         userID = account[0]
         username = account[1]
         password_hash = account[2]
-        if account:
-            is_valid = bcrypt.check_password_hash(password_hash, password)
-            if is_valid:
-                session['logged_in'] = True
-                session['id'] = userID
-                session['username'] = username
-                msg = 'Logged in successfully!'
-                return render_template('index.html', msg = msg)
+        is_valid = bcrypt.check_password_hash(password_hash, password) #ensures password hash is the same as the one provided
+        if account and is_valid: 
+            session['logged_in'] = True #sets session variables
+            session['id'] = userID
+            session['username'] = username
+            msg = 'Logged in successfully!'
+            return render_template('index.html', msg = msg) #redirects to index.html
         else:
-            msg = 'Incorrect username / password !'
+            msg = 'Incorrect username / password !' #redirects back to login saying either username or password was incorrect
     return render_template('login.html', msg = msg)
  
 @app.route('/logout')
 def logout():
-    session.clear()
-    return redirect(url_for('login'))
+    session.clear() #clears session variables
+    return redirect(url_for('login')) #redirects to login
  
 @app.route('/register', methods =['GET', 'POST'])
 def register():
     msg = ''
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form :
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form : #Ensures all fields in form used
         username = request.form['username']
         password = request.form['password']
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM User WHERE Username = %s', (username, ))
+        query = "SELECT * FROM User WHERE Username = %s" #Looks for potential users that already have username
+        vals = (username,)
+        cursor.execute(query, vals)
         account = cursor.fetchone()
         if account:
             msg = 'Account already exists !'
@@ -96,35 +99,16 @@ def register():
         elif not username or not password:
             msg = 'Please fill out the form !'
         else:
-            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8') 
-            cursor.execute('INSERT INTO itc350.User (Username, PasswordHash, IsAdmin) VALUES (%s, %s, %s)', (username, hashed_password, False))
-            conn.commit()
+            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8') #creates a bcrypt hash of password provided
+            query = "INSERT INTO itc350.User (Username, PasswordHash, IsAdmin) VALUES (%s, %s, %s)"
+            vals = (username, hashed_password, False,)
+            cursor.execute(query, vals)
+            conn.commit() #Inserts username and password as new user into User table
             msg = 'Registered successfully!'
-            return render_template('login.html', msg = msg)
-    elif request.method == 'POST':
+            return render_template('login.html', msg = msg) #redirects to login page saying successful register
+    elif request.method == 'POST': #redirects to register if username or password not provided
         msg = 'Please fill out the form !'
     return render_template('register.html', msg = msg)
-
-# EXAMPLE OF POST REQUEST
-@app.route("/new-item", methods=["POST"])
-def add_item():
-    try:
-        # Get items from the form
-        data = request.form
-        item_name = data["name"] # This is defined in the input element of the HTML form on index.html
-        item_quantity = data["quantity"] # This is defined in the input element of the HTML form on index.html
-
-        # TODO: Insert this data into the database
-        
-        # Send message to page. There is code in index.html that checks for these messages
-        flash("Item added successfully", "success")
-        # Redirect to home. This works because the home route is named home in this file
-        return redirect(url_for("home"))
-
-    # If an error occurs, this code block will be called
-    except Exception as e:
-        flash(f"An error occurred: {str(e)}", "error") # Send the error message to the web page
-        return redirect(url_for("home")) # Redirect to home
 # ------------------------ END ROUTES ------------------------ #
 
 
