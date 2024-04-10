@@ -46,7 +46,7 @@ def get_all_buckets():
     conn = get_db_connection()  # Create a new database connection
     cursor = conn.cursor() # Creates a cursor for the connection, you need this to do queries
     # Query the db
-    query = "SELECT BucketName from Buckets WHERE UserID = %s;"
+    query = "SELECT * from Buckets WHERE UserID = %s;"
     vals = (userID,)
     cursor.execute(query, vals)
     # Get result and close
