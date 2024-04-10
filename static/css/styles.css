@@ -1,23 +1,285 @@
+:root {
+    --background: #2b2b2b;
+    --text: #ffffff;
+    --success: #3c763d;
+    --error: red;
+    --info: rgb(77, 103, 190);
+    --box-bg: #383838;
+    --button-bg: #4caf50;
+    --button-hover-bg: #45a049;
+    --link: #4caf50;
+    --link-hover: #45a049;
+}
+
 .alert {
-    padding: 10px; /* Padding for spacing inside the message box */
-    margin-bottom: 15px; /* Margin at the bottom to create space between the message and other content */
-    border-radius: 4px; /* Rounded corners for a softer look */
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
 }
 
 .alert.success {
-    color: #3c763d;
-    border: 1px solid #3c763d;
-    background-color: #dff0d8;
+    color: var(--success);
+    border: 1px solid var(--success);
+    background: #dff0d8;
 }
 
 .alert.error {
-    color: red;
-    border: 1px solid red;
-    background-color: #ffdede;
+    color: var(--error);
+    border: 1px solid var(--error);
+    background: #ffdede;
 }
 
 .alert.info {
-    color: rgb(77, 103, 190);
-    border: 1px solid rgb(77, 103, 190);
-    background-color: #d0e1f5;
+    color: var(--info);
+    border: 1px solid var(--info);
+    background: #d0e1f5;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+}
+
+/* Style for text, password, and number inputs */
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+    background: #494949;
+    color: var(--text);
+}
+
+/* Style for buttons */
+button[type="submit"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background: var(--button-bg);
+    color: var(--text);
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background: var(--button-hover-bg);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--text);
+}
+
+th {
+    background: var(--button-bg);
+}
+
+tr:nth-child(even) {
+    background: #494949;
+}
+
+tr:hover {
+    background: #333333;
+}
+
+a {
+    color: var(--link);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
+}
+
+.box {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: var(--box-bg);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.box-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box {
+    flex: 1;
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.full-width-box {
+    flex-basis: 100%; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+}
+
+.full-width-box .container {
+    width: 100%; 
+}
+
+@media only screen and (min-width: 768px) {
+    .box-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .box {
+        flex-basis: calc(50% - 20px);
+    }
+}
+
+/* Style for the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px; 
+}
+
+.slider-container {
+    margin-top: 10px;
+    margin-bottom: 10px; 
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: var(--button-bg); 
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%; 
+}
+
+input:checked + .slider {
+    background-color: var(--background); 
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--button-hover-bg); 
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Style for select dropdown */
+select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+    background: #494949;
+    color: var(--text);
+    appearance: none; 
+    -webkit-appearance: none; 
+    -moz-appearance: none; 
+}
+
+/* Style for dropdown arrow */
+select::-ms-expand {
+    display: none;
+}
+
+/* Style for dropdown arrow */
+select::after {
+    content: '\25BC'; /* Unicode character for down arrow */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: var(--text);
+}
+
+/* Style for dropdown menu */
+select option {
+    background: var(--box-bg);
+    color: var(--text);
+    padding: 10px;
+    border: none;
+}
+
+/* Style for date input */
+input[type="date"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+    background: #494949;
+    color: var(--text);
+    /* Style placeholder text */
+    ::-webkit-input-placeholder {
+        color: var(--text);
+    }
+    :-moz-placeholder {
+        color: var(--text);
+    }
+    ::-moz-placeholder {
+        color: var(--text);
+    }
+    :-ms-input-placeholder {
+        color: var(--text);
+    }
 }
