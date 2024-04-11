@@ -22,7 +22,7 @@
         {% endif %}
         {% endwith %}
     </div>
-    
+
     <div class="box-container">
         <div class="full-width-box">
             <div class="box">
@@ -34,9 +34,9 @@
         </div>
 
         <div class="box">
-        
 
-            <!-- Middle box for adding a new bucket -->
+
+            <!-- Box for adding a new bucket -->
             <div class="container">
                 <h4>Add new bucket:</h4>
                 <form action="/" method="post">
@@ -75,46 +75,69 @@
                 <br>
                 <!-- Slider for Expense/Deposit -->
                 <label for="amount">Is Expense?</label>
-                <div class="slider-container">
-                <!-- ---------- TODO: Get the JS working to change the expense/deposit --------- -->
-                <br>
+                <div>
+                    <!-- ---------- TODO: Get the JS working to change the expense/deposit --------- -->
+                    <br>
                     <label class="switch">
                         <input type="checkbox" name="expense" id="expense-deposit-toggle" value="Is expense?">
                         <span class="slider round"></span>
                     </label>
                 </div>
                 <br>
-                 <!-- Bucket -->
+                <!-- Bucket -->
                 <label for="bucket">Bucket:</label>
                 <select id="bucket" name="bucket" required>
                     {% for row in items %}
-                        <option value="{{row[1]}}">{{row[1]}}</option>
+                    <option value="{{row[1]}}">{{row[1]}}</option>
                     {% endfor %}
                 </select>
                 <br>
-                <!-- Submit Button -->
-                <button type="submit" name="addTrans">Add Trans</button>
+                <button type="submit" name="addTrans">Add</button>
             </form>
         </div>
     </div>
+
     <div class="box-container">
         <div class="full-width-box">
             <div class="box">
                 <div class="container">
                     <h2>All Buckets</h2>
-                    <dl>
+                    <div class="bucket-container">
                         {% for bucket in items %}
-                        <dt>{{bucket[1]}}</dt>
-                        <dd>Description: {{bucket[2]}}</dd>
-                        <dd>Allocated: ${{bucket[3]}}</dd>
-                        <dd>Remaining: ${{bucket[4]}}</dd>
-                        <br>
+                        <div class="bucket-column">
+                            <div class="bucket">
+                                <h3><a href="{{ url_for('bucket', item_id=bucket[0]) }}">{{ bucket[1] }}</a></h3>
+                                <p class="description">{{ bucket[2] }}</p> <!--- Description -->
+                                <p>${{ bucket[4] }} / ${{ bucket[3] }}</p> <!--- Remaining / Allocated -->
+                            </div>
+                        </div>
                         {% endfor %}
-                    </dl>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</body>
+
+    <!-- <div class="box-container">
+        <div class="full-width-box">
+            <div class="box">
+                <div class="container">
+                    <h2>All Transactions</h2>
+                    <div class="bucket-container">
+                        {% for bucket in items %}
+                        <div class="bucket-column">
+                            <div class="bucket">
+                                <h3>{{ bucket[3] }}</a></h3> <!--- Date !! just change bucket to transactions 
+                                <p class="description">{{ bucket[4] }}</p> <!--- Description !! just change bucket to transactions 
+                                <p>${{ bucket[2] }}</p> <!--- Amount !! just change bucket to transactions 
+                                <p>${{ bucket[1] }}</p> <!--- Bucket 
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
 
 </html>

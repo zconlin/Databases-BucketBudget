@@ -4,22 +4,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BucketName</title>
-    <link rel="stylesheet" href="static/css/styles.css">
+    <title>{{bucket[1]}}</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
 </head>
 
 <body>
-    <!-- Show error or success messages if there are any -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    <!-- Check to see if there are any messages to show -->
-    {% if messages %}
-    {% for category, message in messages %}
-    <p class="alert {{ category }}">{{ message }}</p>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
+    <div>
+        <!-- Show error or success messages if there are any -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        <!-- Check to see if there are any messages to show -->
+        {% if messages %}
+        {% for category, message in messages %}
+        <p class="alert {{ category }}">{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
 
-    <!-- This is the zoomed in page of the buckets -->
+    <div class="box-container">
+        <div class="full-width-box">
+            <div class="box">
+                <div class="container">
+                    <h2>{{bucket[1]}} Summary</h2>
+                    <p>Total Allotted: ${{bucket[3]}}</p>
+                    <p>Total Remaining: ${{bucket[4]}}</p>
+                    <p class="logout"><a class="bottom" href="{{url_for('home')}}">Back</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-container">
+        <div class="full-width-box">
+            <div class="box box-left">
+                <h4>Add new expense/deposit:</h4>
+                <form action="/bucket/{{bucket[0]}}" method="post">
+                    <!-- Date -->
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+                    <br>
+                    <!-- Quantity -->
+                    <label for="descripton">Description:</label>
+                    <input type="text" id="description" name="description" required>
+                    <br>
+                    <!-- Amount -->
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" name="amount" required>
+                    <br>
+                    <!-- Slider for Expense/Deposit -->
+                    <label for="amount">Is Expense?</label>
+                    <div class="slider-container">
+                        <!-- ---------- TODO: Get the JS working to change the expense/deposit --------- -->
+                        <br>
+                        <label class="switch">
+                            <input type="checkbox" name="expense" id="expense-deposit-toggle" value="Is expense?">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <br>
+                    <!-- Bucket -->
+                    <label for="bucket">Bucket:</label>
+                    <select id="bucket" name="bucket" required>
+                        <option value="{{bucket[1]}}">{{bucket[1]}}</option>
+                    </select>
+                    <br>
+                    <button type="submit" name="addTrans">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-container">
+        <div class="full-width-box">
+            <div class="box">
+                <div class="container">
+                    <!-- <h2>All Transactions in {{bucket[1]}}</h2> -->
+                    <dl style="text-align: left;">
+                    {% for trans in items %}
+                        <dt class="transaction-date">{{trans[3]}}</dt>
+                        <dd>{{trans[4]}}</dd>
+                        <dd>${{trans[2]}}</dd>
+
+                        <!--TODO: fix this logic to utilize the isExpense column-->
+                        {% if trans[1] == '1' %}
+                            <dd>Expense</dd>
+                        {% else %}
+                            <dd>Income</dd>
+                        {% endif %}
+                        <dd><form action="/bucket/{{bucket[0]}}" method="post">
+                            <input type="hidden" name="transID" value="{{trans[0]}}">
+                            <button type="submit" name="deleteTrans" class="delete">Delete?</button>
+                        </form></dd>
+                        <br>
+                    {% endfor %}
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

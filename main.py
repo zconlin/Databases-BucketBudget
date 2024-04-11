@@ -55,19 +55,32 @@ def get_all_buckets():
     return result
 
 # Get all transactions from the "transactions" table of the db
-def get_all_transactions():
+def get_all_transactions(bucketID):
     # Create a new database connection for each request
+    userID = session['id']
     conn = get_db_connection()  # Create a new database connection
     cursor = conn.cursor() # Creates a cursor for the connection, you need this to do queries
     # Query the db
     # TODO: Change this to tre query rather than the copy paste
-    query = "SELECT u.Username, b.BucketName, b.BucketDescription, b.BucketAllotted, b.BucketRemaining FROM User u JOIN Buckets b ON u.UserID = b.UserID WHERE u.Username = %s;" 
-    vals = (session['username'],)
+    query = "SELECT * FROM Transactions WHERE UserID = %s AND BucketID = %s ORDER BY TransDate desc;" 
+    vals = (userID, bucketID,)
     cursor.execute(query, vals)
     # Get result and close
     result = cursor.fetchall() # Gets result from query
     conn.close() # Close the db connection (NOTE: You should do this after each query, otherwise your database may become locked)
     return result
+
+def get_one_bucket(bucketID):
+    conn = get_db_connection()  # Create a new database connection
+    cursor = conn.cursor() # Creates a cursor for the connection, you need this to do queries
+    # Query the db
+    query = "SELECT * from Buckets WHERE UserID = %s AND BucketID = %s;"
+    vals = (session['id'], bucketID,)
+    cursor.execute(query, vals)
+    # Get result and close
+    bucket = cursor.fetchone() # Gets result from query
+    conn.close()
+    return bucket
 
 # ------------------------ END FUNCTIONS ------------------------ #
 
@@ -156,7 +169,8 @@ def login():
             session['id'] = userID
             session['username'] = username
             msg = 'Logged in successfully!'
-            return render_template('index.html', msg = msg) #redirects to index.html
+            items = get_all_buckets() # Call defined function to get all items
+            return render_template("index.html", items=items, msg=msg)
         else:
             msg = 'Incorrect username / password !' #redirects back to login saying either username or password was incorrect
     return render_template('login.html', msg = msg)
@@ -197,10 +211,81 @@ def register():
         msg = 'Please fill out the form !'
     return render_template('register.html', msg = msg)
 
-@app.route('/new-trans', methods =['POST'])
-def newTrans():
+@app.route('/bucket/<int:item_id>', methods =['GET', 'POST'])
+def bucket(item_id):
+    msg=''
     if not session.get('logged_in'):
         return render_template('login.html')
+    if request.method == 'POST' and 'addTrans' in request.form:
+        if 'date' in request.form and 'description' in request.form and 'amount' in request.form and 'date' in request.form and 'bucket' in request.form:
+            date = request.form['date']
+            description = request.form['description']
+            amount = request.form['amount']
+            bucket = request.form['bucket']
+            conn = get_db_connection()  # Create a new database connection
+            cursor = conn.cursor() # Creates a cursor for the connection, you need this to do queries
+            query = "SELECT * FROM Buckets WHERE BucketName = %s and UserID = %s;"
+            vals = (bucket, session['id'],)
+            cursor.execute(query, vals)
+            bucketSQL = cursor.fetchone()
+            conn.close() # Close the db connection
+            bucketID = bucketSQL[0]
+            conn = get_db_connection()  # Create a new database connection
+            cursor = conn.cursor() # Creates a cursor for the connection, you need this to do queries
+            # Query the db
+            query = "INSERT INTO Transactions (UserID, IsExpense, Amount, TransDate, Description, BucketID) VALUES (%s, %s, %s, %s, %s, %s);"
+            if request.form.get('expense'):
+                vals = (session['id'], 1, amount, date, description, bucketID,)
+                bucketRemaining = Decimal(bucketSQL[4]) - Decimal(amount)
+            else:
+                vals = (session['id'], 0, amount, date, description, bucketID,)
+                bucketRemaining = Decimal(bucketSQL[4]) + Decimal(amount)
+            cursor.execute(query, vals)
+            conn.commit() #Inserts username and password as new user into User table
+            query = "UPDATE Buckets SET BucketRemaining = %s WHERE BucketID = %s;"
+            vals = (bucketRemaining, bucketID,)
+            cursor.execute(query, vals)
+            conn.commit()
+            conn.close() # Close the db connection
+        else:
+            msg = 'Please fill out all fields in the form !' # Call defined function to create transaction
+    if request.method == 'POST' and 'transID' in request.form :
+        conn = get_db_connection()  # Create a new database connection
+        cursor = conn.cursor() # Creates a cursor for the connection, you need this to do queries
+        # Query the db
+        query = "SELECT * FROM Transactions WHERE TransactionID = %s;"
+        vals = (request.form['transID'],)
+        cursor.execute(query, vals)
+        trans = cursor.fetchone()
+        isExpense = trans[1]
+        query = "DELETE FROM Transactions WHERE TransactionID = %s;"
+        vals = (request.form['transID'],)
+        cursor.execute(query, vals)
+        conn.commit()
+        query = "SELECT * from Buckets WHERE UserID = %s AND BucketID = %s;"
+        vals = (session['id'], item_id,)
+        print(session['id'])
+        print(item_id)
+        cursor.execute(query, vals)
+        bucket = cursor.fetchone() # Gets result from query
+        print(bucket)
+        if isExpense == 1:
+            bucketRemaining = Decimal(bucket[4]) + Decimal(trans[2])
+        else:
+            bucketRemaining = Decimal(bucket[4]) - Decimal(trans[2])
+        query = "UPDATE Buckets SET BucketRemaining = %s WHERE BucketID = %s;"
+        vals = (bucketRemaining, bucket[0],)
+        cursor.execute(query, vals)
+        conn.commit()
+        conn.close() # Close the db connection
+    items = get_all_transactions(item_id)
+    bucket = get_one_bucket(item_id)
+    print(bucket[5])
+    if bucket[5] != session['id']:
+        items = get_all_buckets() # Call defined function to get all items
+        return render_template("index.html", items=items)
+    return render_template('bucket.html', items = items, bucket=bucket, msg=msg)
+
 # ------------------------ END ROUTES ------------------------ #
 
 
