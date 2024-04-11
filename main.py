@@ -26,20 +26,6 @@ def get_db_connection():
     )
     return conn
 
-# Get all buckets from the "buckets" table of the db
-# def get_all_buckets():
-#     # Create a new database connection for each request
-#     conn = get_db_connection()  # Create a new database connection
-#     cursor = conn.cursor() # Creates a cursor for the connection, you need this to do queries
-#     # Query the db
-#     query = "SELECT u.Username, b.BucketName, b.BucketDescription, b.BucketAllotted, b.BucketRemaining FROM User u JOIN Buckets b ON u.UserID = b.UserID WHERE u.Username = %s;"
-#     vals = (session['username'],)
-#     cursor.execute(query, vals)
-#     # Get result and close
-#     result = cursor.fetchall() # Gets result from query
-#     conn.close() # Close the db connection (NOTE: You should do this after each query, otherwise your database may become locked)
-#     return result
-
 def get_all_buckets():
     # Create a new database connection for each request
     userID = session['id']
@@ -264,11 +250,8 @@ def bucket(item_id):
         conn.commit()
         query = "SELECT * from Buckets WHERE UserID = %s AND BucketID = %s;"
         vals = (session['id'], item_id,)
-        print(session['id'])
-        print(item_id)
         cursor.execute(query, vals)
         bucket = cursor.fetchone() # Gets result from query
-        print(bucket)
         if isExpense == 1:
             bucketRemaining = Decimal(bucket[4]) + Decimal(trans[2])
         else:
@@ -280,7 +263,6 @@ def bucket(item_id):
         conn.close() # Close the db connection
     items = get_all_transactions(item_id)
     bucket = get_one_bucket(item_id)
-    print(bucket[5])
     if bucket[5] != session['id']:
         items = get_all_buckets() # Call defined function to get all items
         return render_template("index.html", items=items)
@@ -291,4 +273,4 @@ def bucket(item_id):
 
 # listen on port 8080
 if __name__ == "__main__":
-    app.run(port=8080, debug=True) # TODO: Students PLEASE remove debug=True when you deploy this for production!!!!!
+    app.run(host='0.0.0.0', port=8080, debug=False) # TODO: Students PLEASE remove debug=True when you deploy this for production!!!!!

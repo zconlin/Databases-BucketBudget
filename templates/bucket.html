@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{bucket[1]}}</title>
     <link rel="stylesheet" href="../static/css/styles.css">
+    <script src="../static/script.js"></script>
 </head>
 
 <body>
@@ -83,13 +84,11 @@
                         <dt class="transaction-date">{{trans[3]}}</dt>
                         <dd>{{trans[4]}}</dd>
                         <dd>${{trans[2]}}</dd>
-
-                        <!--TODO: fix this logic to utilize the isExpense column-->
-                        {% if trans[1] == '1' %}
+                        <!-- {% if trans[1] == '1' %}
                             <dd>Expense</dd>
                         {% else %}
                             <dd>Income</dd>
-                        {% endif %}
+                        {% endif %} -->
                         <dd><form action="/bucket/{{bucket[0]}}" method="post">
                             <input type="hidden" name="transID" value="{{trans[0]}}">
                             <button type="submit" name="deleteTrans" class="delete">Delete?</button>
